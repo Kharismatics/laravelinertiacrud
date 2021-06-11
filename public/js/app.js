@@ -2114,6 +2114,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -2124,16 +2128,16 @@ __webpack_require__.r(__webpack_exports__);
       this.$inertia.get("/card");
     },
     save: function save() {
-      this.$inertia.post("/card", this.defaultItem).then(function (res) {
-        console.log(res.response);
-      });
+      this.defaultItem.singlefile = this.singlefile;
+      this.$inertia.form(this.defaultItem).post("/card");
     }
   },
   props: ["pageTitle", "formTitle", "defaultItem", "errors"],
   data: function data() {
     return {
       isdisabled: false,
-      datepickermenu: false,
+      // datepickermenu: false,
+      singlefile: null,
       selectItems: [{
         label: "EASY",
         value: "easy"
@@ -22350,6 +22354,30 @@ var render = function() {
                                 _vm.$set(_vm.defaultItem, "istrue", $$v)
                               },
                               expression: "defaultItem.istrue"
+                            }
+                          })
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-col",
+                        { attrs: { cols: "12", sm: "12", md: "12" } },
+                        [
+                          _c("v-file-input", {
+                            attrs: {
+                              accept: "image/*",
+                              label: "Upload Image",
+                              chips: "",
+                              "show-size": "",
+                              counter: ""
+                            },
+                            model: {
+                              value: _vm.singlefile,
+                              callback: function($$v) {
+                                _vm.singlefile = $$v
+                              },
+                              expression: "singlefile"
                             }
                           })
                         ],

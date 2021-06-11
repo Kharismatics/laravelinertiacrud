@@ -81,6 +81,10 @@
                 :disabled="isdisabled"
               ></v-checkbox>
             </v-col>
+            <v-col cols="12" sm="12" md="12">
+              <!-- <input type="file" @input="singlefile = $event.target.files[0]" /> -->
+              <v-file-input v-model="singlefile" accept="image/*" label="Upload Image" chips show-size counter> </v-file-input>
+            </v-col>
           </v-row>
         </v-container>
       </v-card-text>
@@ -106,16 +110,16 @@ export default {
       this.$inertia.get("/card");
     },
     save: function () {
-      this.$inertia.post("/card", this.defaultItem).then((res) => {
-        console.log(res.response);
-      });
+      this.defaultItem.singlefile = this.singlefile;
+      this.$inertia.form(this.defaultItem).post("/card");
     },
   },
   props: ["pageTitle", "formTitle", "defaultItem", "errors"],
   data() {
     return {
-      isdisabled:false,
-      datepickermenu: false,
+      isdisabled: false,
+      // datepickermenu: false,
+      singlefile: null,
       selectItems: [
         { label: "EASY", value: "easy" },
         { label: "MEDIUM", value: "medium" },

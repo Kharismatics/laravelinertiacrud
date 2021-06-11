@@ -41,6 +41,9 @@ class CardController extends Controller
             'maximal' => 'required|numeric|min:50',
             'ability' => 'required',
         ]);
+        if ($request->hasFile('singlefile')) {
+            // upload file
+        }
         Card::create($request->all());
         return redirect()->route('card.index')->with('message', 'Data Created Successfully.');
     }
