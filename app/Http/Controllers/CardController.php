@@ -17,18 +17,18 @@ class CardController extends Controller
             'datatables' => $data
         ]);
     }
-    public function create()
+    public function create(Request $request)
     {
         return Inertia::render('card/create', [
             'pageTitle'=>'Card',
             'formTitle'=>'Create',
             'defaultItem' => [
-                'name'=> "",
-                'date_create'=> date("Y-m-d"),
-                'minimal'=> 0,
-                'maximal'=> 0,
-                'ability'=> "easy",
-                'istrue'=> 0,
+                'name'=> $request->old('name'),
+                'date_create'=> $request->old('date_create',date('Y-m-d')), // default now
+                'minimal'=> $request->old('minimal'),
+                'maximal'=> $request->old('maximal'),
+                'ability'=> $request->old('ability','easy'),
+                'istrue'=> $request->old('istrue',0), // default 0
             ]
         ]);
     }
@@ -53,13 +53,13 @@ class CardController extends Controller
             'defaultItem' => $data
         ]);
     }
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
         $data = Card::find($id);
         return Inertia::render('card/edit', [
             'pageTitle'=>'Card',
             'formTitle'=>'Edit',
-            'defaultItem' => $data
+            'defaultItem' => ( $request->old() ? $request->old() : $data)
         ]);
     }
     public function update(Request $request, $id)
