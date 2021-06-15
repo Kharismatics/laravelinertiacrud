@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CardController;
+use App\Http\Controllers\FileStorageController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,3 +18,8 @@ Route::get('/', function () {
     return Inertia\Inertia::render('Home');
 });
 Route::resource('card', CardController::class);
+// Route::resource('file', FileStorageController::class);
+// Route::resource('card.file', FileStorageController::class);
+Route::resource('card.file', FileStorageController::class, [
+    'parameters' => ['file' => 'file:id','card' => 'card:id'],
+]);

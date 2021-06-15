@@ -106,16 +106,18 @@ export default {
       this.$inertia.get("/card");
     },
     save: function () {
-      this.defaultItem.singlefile = this.singlefile;
-      this.$inertia.form(this.defaultItem).post("/card");
+      this.defaultItem._method = 'PUT';
+      console.log(this.defaultItem);
+      this.$inertia.post("/card/"+ this.defaultItem.id, this.defaultItem).then((res) => {
+        console.log(res.response);
+      });
     },
   },
   props: ["pageTitle", "formTitle", "defaultItem", "errors"],
   data() {
     return {
-      isdisabled: false,
+      isdisabled:false,
       datepickermenu: false,
-      singlefile: null,
       selectItems: [
         { label: "EASY", value: "easy" },
         { label: "MEDIUM", value: "medium" },

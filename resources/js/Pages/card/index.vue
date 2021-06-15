@@ -44,9 +44,11 @@
         </v-chip>
       </template>
       <template v-slot:[`item.actions`]="{ item }">
-        <v-icon small class="mr-2" @click="showRow(item)"> mdi-eye </v-icon>
         <v-icon small class="mr-2" @click="editRow(item)"> mdi-pencil </v-icon>
-        <v-icon small @click="opendialogDelete(item)"> mdi-delete </v-icon>
+        <v-icon small class="mr-2" @click="deleteRowConfirmation(item)"> mdi-delete </v-icon>
+        <br>
+        <v-icon small class="mr-2" @click="showRow(item)"> mdi-eye </v-icon>
+        <v-icon small class="mr-2" @click="uploadRow(item)"> mdi-cloud-upload </v-icon>
       </template>
       <template v-slot:[`body.append`]="{ items }">
         <tr>
@@ -74,10 +76,13 @@ export default {
     VuetifyLayout,
   },
   methods: {
-    opendialogDelete(item) {
+    deleteRowConfirmation(item) {
       this.editedIndex = this.datatables.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialogDelete = true;
+    },
+    uploadRow(item) {
+      this.$inertia.get("/card/"+item.id+"/file",{ model:'card', id:item.id });
     },
     createRow: function () {
       this.$inertia.get("/card/create");

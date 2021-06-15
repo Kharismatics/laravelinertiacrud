@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Card;
-use Illuminate\Support\Facades\Validator;
 
 class CardController extends Controller
 {
@@ -37,14 +36,11 @@ class CardController extends Controller
         $validated = $request->validate([
             'name' => 'required',
             'date_create' => 'required|date',
-            'minimal' => 'required|numeric|min:50',
-            'maximal' => 'required|numeric|min:50',
+            'minimal' => 'required|numeric|min:1',
+            'maximal' => 'required|numeric|max:50',
             'ability' => 'required',
         ]);
-        if ($request->hasFile('singlefile')) {
-            // upload file
-        }
-        Card::create($request->all());
+        $row = Card::create($request->all());
         return redirect()->route('card.index')->with('message', 'Data Created Successfully.');
     }
     public function show($id)
@@ -62,7 +58,7 @@ class CardController extends Controller
         return Inertia::render('card/edit', [
             'pageTitle'=>'Card',
             'formTitle'=>'Edit',
-            'defaultItem' => ( $request->old() ? $request->old() : $data)
+            'defaultItem' => ( $request->old() ? $request->old() : $data )
         ]);
     }
     public function update(Request $request, $id)
@@ -70,8 +66,8 @@ class CardController extends Controller
         $validated = $request->validate([
             'name' => 'required',
             'date_create' => 'required|date',
-            'minimal' => 'required|numeric|min:50',
-            'maximal' => 'required|numeric|min:50',
+            'minimal' => 'required|numeric|min:1',
+            'maximal' => 'required|numeric|max:50',
             'ability' => 'required',
         ]);
   

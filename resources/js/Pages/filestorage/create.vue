@@ -81,6 +81,10 @@
                 :disabled="isdisabled"
               ></v-checkbox>
             </v-col>
+            <v-col cols="12" sm="12" md="12">
+              <!-- <input type="file" @input="singlefile = $event.target.files[0]" /> -->
+              <v-file-input v-model="singlefile" accept="image/*" label="Upload Image" chips show-size counter> </v-file-input>
+            </v-col>
           </v-row>
         </v-container>
       </v-card-text>

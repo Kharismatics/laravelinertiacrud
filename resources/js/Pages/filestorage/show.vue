@@ -88,7 +88,6 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="blue darken-1" text @click="close"> Back </v-btn>
-        <v-btn color="blue darken-1" text @click="save"> Save </v-btn>
       </v-card-actions>
     </v-card>
   </vuetify-layout>
@@ -105,17 +104,12 @@ export default {
     close() {
       this.$inertia.get("/card");
     },
-    save: function () {
-      this.defaultItem.singlefile = this.singlefile;
-      this.$inertia.form(this.defaultItem).post("/card");
-    },
   },
-  props: ["pageTitle", "formTitle", "defaultItem", "errors"],
+  props: ["pageTitle", "formTitle", "defaultItem","errors"],
   data() {
     return {
-      isdisabled: false,
+      isdisabled:true,
       datepickermenu: false,
-      singlefile: null,
       selectItems: [
         { label: "EASY", value: "easy" },
         { label: "MEDIUM", value: "medium" },
