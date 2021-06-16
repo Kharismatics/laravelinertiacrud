@@ -1,7 +1,7 @@
 <template>
   <vuetify-layout>
     <template #header> Card </template>
-    <v-alert color="primary" v-if="flash.message" dark>
+    <v-alert color="success" v-if="flash.message" dark>
       {{ flash.message }}
     </v-alert>
     <v-data-table
@@ -49,6 +49,7 @@
         <br>
         <v-icon small class="mr-2" @click="showRow(item)"> mdi-eye </v-icon>
         <v-icon small class="mr-2" @click="uploadRow(item)"> mdi-cloud-upload </v-icon>
+        <v-icon small class="mr-2" @click="tes(item)"> mdi-upload </v-icon>
       </template>
       <template v-slot:[`body.append`]="{ items }">
         <tr>
@@ -82,7 +83,10 @@ export default {
       this.dialogDelete = true;
     },
     uploadRow(item) {
-      this.$inertia.get("/card/"+item.id+"/file",{ model:'card', id:item.id });
+      this.$inertia.post("/card/"+item.id+"/file",{ model:'card', id:item.id });
+    },
+    tes(item) {
+      console.log(item);
     },
     createRow: function () {
       this.$inertia.get("/card/create");
@@ -99,7 +103,10 @@ export default {
       this.dialogDelete = false;
     },
   },
-  props: ["datatables", "errors", "flash"],
+  props: ["model","datatables", "errors", "flash"],
+  created() {
+    console.log(this.model);
+  },
   data() {
     return {
       dialogDelete: false,

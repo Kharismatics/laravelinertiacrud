@@ -82,6 +82,21 @@
         </template>
       </v-list>
     </v-navigation-drawer>
+    <v-navigation-drawer
+      app
+      clipped
+      right
+      v-model="filedrawer"
+      temporary
+    >
+      <template v-slot:append>
+        <div class="pa-2">
+          <v-btn block @click.stop="filedrawer = !filedrawer">
+            Close
+          </v-btn>
+        </div>
+      </template>
+    </v-navigation-drawer>
 
     <v-app-bar
       :clipped-left="$vuetify.breakpoint.lgAndUp"
@@ -136,10 +151,14 @@
 
 <script>
 export default {
+  remember: {
+    data: ['filedrawer'],
+  },
   components: {},
   data: () => ({
     dialog: false,
     drawer: false,
+    filedrawer:false,
     selectedMenu: null,
     items: [
       { icon: "mdi-apps", text: "Apps" },

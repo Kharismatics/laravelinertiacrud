@@ -13,4 +13,8 @@ class Card extends Model
     protected $fillable = [
         'date_create', 'name', 'minimal', 'maximal', 'istrue', 'ability',
     ];
+    public static function getTableName()
+    {
+        return (new self())->getTable();
+    }
 }

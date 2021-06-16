@@ -2118,12 +2118,31 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  remember: {
+    data: ['filedrawer']
+  },
   components: {},
   data: function data() {
     return {
       dialog: false,
       drawer: false,
+      filedrawer: false,
       selectedMenu: null,
       items: [{
         icon: "mdi-apps",
@@ -2581,6 +2600,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -2593,10 +2613,13 @@ __webpack_require__.r(__webpack_exports__);
       this.dialogDelete = true;
     },
     uploadRow: function uploadRow(item) {
-      this.$inertia.get("/card/" + item.id + "/file", {
+      this.$inertia.post("/card/" + item.id + "/file", {
         model: 'card',
         id: item.id
       });
+    },
+    tes: function tes(item) {
+      console.log(item);
     },
     createRow: function createRow() {
       this.$inertia.get("/card/create");
@@ -2613,7 +2636,10 @@ __webpack_require__.r(__webpack_exports__);
       this.dialogDelete = false;
     }
   },
-  props: ["datatables", "errors", "flash"],
+  props: ["model", "datatables", "errors", "flash"],
+  created: function created() {
+    console.log(this.model);
+  },
   data: function data() {
     return {
       dialogDelete: false,
@@ -22951,6 +22977,47 @@ var render = function() {
         1
       ),
       _vm._v(" "),
+      _c("v-navigation-drawer", {
+        attrs: { app: "", clipped: "", right: "", temporary: "" },
+        scopedSlots: _vm._u([
+          {
+            key: "append",
+            fn: function() {
+              return [
+                _c(
+                  "div",
+                  { staticClass: "pa-2" },
+                  [
+                    _c(
+                      "v-btn",
+                      {
+                        attrs: { block: "" },
+                        on: {
+                          click: function($event) {
+                            $event.stopPropagation()
+                            _vm.filedrawer = !_vm.filedrawer
+                          }
+                        }
+                      },
+                      [_vm._v("\n          Close\n        ")]
+                    )
+                  ],
+                  1
+                )
+              ]
+            },
+            proxy: true
+          }
+        ]),
+        model: {
+          value: _vm.filedrawer,
+          callback: function($$v) {
+            _vm.filedrawer = $$v
+          },
+          expression: "filedrawer"
+        }
+      }),
+      _vm._v(" "),
       _c(
         "v-app-bar",
         {
@@ -23873,7 +23940,7 @@ var render = function() {
     [
       _vm._v(" "),
       _vm.flash.message
-        ? _c("v-alert", { attrs: { color: "primary", dark: "" } }, [
+        ? _c("v-alert", { attrs: { color: "success", dark: "" } }, [
             _vm._v("\n    " + _vm._s(_vm.flash.message) + "\n  ")
           ])
         : _vm._e(),
@@ -24072,6 +24139,20 @@ var render = function() {
                       }
                     },
                     [_vm._v(" mdi-cloud-upload ")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-icon",
+                    {
+                      staticClass: "mr-2",
+                      attrs: { small: "" },
+                      on: {
+                        click: function($event) {
+                          return _vm.tes(item)
+                        }
+                      }
+                    },
+                    [_vm._v(" mdi-upload ")]
                   )
                 ]
               }
