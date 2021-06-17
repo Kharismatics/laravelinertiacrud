@@ -1,13 +1,13 @@
 <template>
-  <div>tes</div>
+  
 </template>
 
 <script>
 import VuetifyLayout from "@/Layouts/VuetifyLayout";
-import UploadFileLayout from "@/Layouts/UploadFileLayout";
+import SubDetailLayout from "@/Layouts/SubDetailLayout";
 
 export default {
-  layout: [VuetifyLayout, UploadFileLayout],
+  layout: [VuetifyLayout, SubDetailLayout],
   methods: {
     close() {
       console.log("param");

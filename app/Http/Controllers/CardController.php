@@ -14,7 +14,8 @@ class CardController extends Controller
         return Inertia::render('card/index', [
             'pageTitle'=>'Card',
             'datatables' => $data,
-            'model'=>Card::getTableName()
+            'model'=>Card::getTableName(),
+            'tablename'=>class_basename(new Card())
         ]);
     }
     public function create(Request $request)

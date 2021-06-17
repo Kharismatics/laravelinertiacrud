@@ -6,6 +6,7 @@ import { InertiaApp } from '@inertiajs/inertia-vue';
 import { InertiaForm } from 'laravel-jetstream';
 import PortalVue from 'portal-vue';
 import vuetify from '@/Plugins/vuetify';
+import store from '@/Plugins/vuex';
 
 Vue.mixin({ methods: { route } });
 Vue.use(InertiaApp);
@@ -16,6 +17,7 @@ const app = document.getElementById('app');
 
 new Vue({
     vuetify,
+    store,
     render: (h) =>
         h(InertiaApp, {
             props: {

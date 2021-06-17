@@ -45,11 +45,17 @@
       </template>
       <template v-slot:[`item.actions`]="{ item }">
         <v-icon small class="mr-2" @click="editRow(item)"> mdi-pencil </v-icon>
-        <v-icon small class="mr-2" @click="deleteRowConfirmation(item)"> mdi-delete </v-icon>
-        <br>
+        <v-icon small class="mr-2" @click="deleteRowConfirmation(item)">
+          mdi-delete
+        </v-icon>
+        <br />
         <v-icon small class="mr-2" @click="showRow(item)"> mdi-eye </v-icon>
-        <v-icon small class="mr-2" @click="uploadRow(item)"> mdi-cloud-upload </v-icon>
-        <v-icon small class="mr-2" @click="tes(item)"> mdi-upload </v-icon>
+        <v-icon small class="mr-2" @click="openRowDetail(item)">
+          mdi-cloud-upload
+        </v-icon>
+        <v-icon small class="mr-2" @click="openRowFilenav(item)">
+          mdi-upload
+        </v-icon>
       </template>
       <template v-slot:[`body.append`]="{ items }">
         <tr>
@@ -61,7 +67,9 @@
             {{ items.reduce((a, b) => a + (b["maximal"] || 0), 0) }}
           </th>
           <th>
-            {{ items.reduce((a, b) => a + ((b["maximal"]-b["minimal"]) || 0), 0) }}
+            {{
+              items.reduce((a, b) => a + (b["maximal"] - b["minimal"] || 0), 0)
+            }}
           </th>
         </tr>
       </template>
@@ -82,17 +90,30 @@ export default {
       this.editedItem = Object.assign({}, item);
       this.dialogDelete = true;
     },
-    uploadRow(item) {
-      this.$inertia.post("/card/"+item.id+"/file",{ model:'card', id:item.id });
+    openRowDetail(item) {
+      this.$inertia.post("/card/" + item.id + "/detail", {
+        model: "card",
+        id: item.id,
+      });
     },
-    tes(item) {
-      console.log(item);
+    openRowFilenav(item) {
+      axios
+        .post("/card/" + item.id + "/file", {
+          item,
+          model: "card",
+          id: item.id,
+        })
+        .then((res) => {
+          // console.log(item);
+          this.$store.commit("stateFileDrawerNav");
+          this.$store.commit("stateFileBucket", res.data);
+        });
     },
     createRow: function () {
       this.$inertia.get("/card/create");
     },
     showRow: function (item) {
-      this.$inertia.get("/card/" + item.id );
+      this.$inertia.get("/card/" + item.id);
     },
     editRow: function (item) {
       this.$inertia.get("/card/" + item.id + "/edit");
@@ -103,9 +124,14 @@ export default {
       this.dialogDelete = false;
     },
   },
-  props: ["model","datatables", "errors", "flash"],
+  props: ["model", "datatables", "errors", "flash"],
   created() {
-    console.log(this.model);
+    // console.log(this.$store);
+    // console.log(this.$vuetify);
+    // this.$store.commit("increment");
+    // console.log(this.$store.state.count);
+    console.log("this.$store.state.FileBucket");
+    console.log(this.$store.state.FileBucket);
   },
   data() {
     return {

@@ -82,21 +82,6 @@
         </template>
       </v-list>
     </v-navigation-drawer>
-    <v-navigation-drawer
-      app
-      clipped
-      right
-      v-model="filedrawer"
-      temporary
-    >
-      <template v-slot:append>
-        <div class="pa-2">
-          <v-btn block @click.stop="filedrawer = !filedrawer">
-            Close
-          </v-btn>
-        </div>
-      </template>
-    </v-navigation-drawer>
 
     <v-app-bar
       :clipped-left="$vuetify.breakpoint.lgAndUp"
@@ -138,6 +123,32 @@
       <v-container fill-height fluid>
         <v-row no-gutters align="center" justify="center">
           <v-col>
+            <upload-file-layout/>
+            <!-- <v-navigation-drawer
+              app
+              clipped
+              right
+              v-model="$store.state.FileDrawerNav"
+              temporary
+              v-bind:width="500"
+            >
+            <upload-file-layout>
+
+            </upload-file-layout>
+              <template v-slot:append>
+                <div class="pa-2">
+                  <v-btn
+                    color="primary"
+                    block
+                    @click.stop="$inertia.get('/card');
+                      $store.state.FileDrawerNav = !$store.state.FileDrawerNav
+                    "
+                  >
+                    Close
+                  </v-btn>
+                </div>
+              </template>
+            </v-navigation-drawer> -->
             <slot></slot>
           </v-col>
         </v-row>
@@ -150,15 +161,12 @@
 </template>
 
 <script>
+import UploadFileLayout from "@/Layouts/UploadFileLayout";
 export default {
-  remember: {
-    data: ['filedrawer'],
-  },
-  components: {},
+  components: { UploadFileLayout },
   data: () => ({
     dialog: false,
     drawer: false,
-    filedrawer:false,
     selectedMenu: null,
     items: [
       { icon: "mdi-apps", text: "Apps" },
