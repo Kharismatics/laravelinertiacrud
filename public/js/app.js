@@ -2037,22 +2037,30 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   methods: {
     close: function close() {
       console.log("cloes");
+      this.$refs.addImageForm.reset(); // this.$refs.fileupload.value = null;
     },
+    change: function change() {},
     submit: function submit() {
-      // console.log(this.$store.state.FileBucket.data);
-      // this.form.post("/card/" + this.item.id + "/file")
-      console.log("zzz");
-      console.log(this.$store.state.FileBucket);
+      console.log(this.$refs.fileupload.value); // // console.log(this.$store.state.FileBucket);
+
+      this.form.model = this.$store.state.FileBucket.model;
+      this.form.model_id = this.$store.state.FileBucket.id;
+      this.form.singlefile = this.singlefile;
+      this.$inertia.form(this.form).post("/card/" + this.$store.state.FileBucket.id + "/file", this.form, {
+        forceFormData: true
+      });
     }
   },
-  props: ["zzz"],
+  computed: {},
+  props: [],
   data: function data() {
     return {
-      dialog: true,
       items: [{
         title: "Dashboard",
         icon: "mdi-view-dashboard"
@@ -2064,16 +2072,14 @@ __webpack_require__.r(__webpack_exports__);
         icon: "mdi-help-box"
       }],
       right: null,
-      form: this.$inertia.form({
-        name: null,
-        avatar: null
-      })
+      singlefile: null,
+      clearable: true,
+      form: {}
     };
   },
-  created: function created() {
-    console.log('formupload');
-    console.log("this.$store.state.FileBucket");
-    console.log(this.$store.state.FileBucket);
+  created: function created() {// console.log("formupload");
+    // console.log("this.$store.state.FileBucket");
+    // console.log(this.$store.state.FileBucket);
   }
 });
 
@@ -23381,7 +23387,8 @@ var render = function() {
                       attrs: { color: "primary", block: "" },
                       on: {
                         click: function($event) {
-                          $event.stopPropagation() // $inertia.get('/card');
+                          $event.stopPropagation()
+                          _vm.close()
                           _vm.$store.state.FileDrawerNav = !_vm.$store.state
                             .FileDrawerNav
                         }
@@ -23427,65 +23434,44 @@ var render = function() {
       _c("v-divider"),
       _vm._v(" "),
       _c(
-        "form",
-        {
-          on: {
-            submit: function($event) {
-              $event.preventDefault()
-              return _vm.submit($event)
-            }
-          }
-        },
+        "v-container",
         [
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.form.name,
-                expression: "form.name"
-              }
-            ],
-            attrs: { type: "text" },
-            domProps: { value: _vm.form.name },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.form, "name", $event.target.value)
-              }
-            }
-          }),
-          _vm._v(" "),
-          _c("input", {
-            attrs: { type: "file" },
-            on: {
-              input: function($event) {
-                _vm.form.avatar = $event.target.files[0]
-              }
-            }
-          }),
-          _vm._v(" "),
-          _vm.form.progress
-            ? _c(
-                "progress",
-                {
-                  attrs: { max: "100" },
-                  domProps: { value: _vm.form.progress.percentage }
+          _c(
+            "form",
+            { ref: "addImageForm", attrs: { "lazy-validation": "" } },
+            [
+              _c("v-file-input", {
+                ref: "fileupload",
+                attrs: {
+                  clearable: "",
+                  chips: "",
+                  label: "File input w/ chips"
                 },
-                [
-                  _vm._v(
-                    "\n      " +
-                      _vm._s(_vm.form.progress.percentage) +
-                      "%\n    "
-                  )
-                ]
-              )
-            : _vm._e(),
+                model: {
+                  value: _vm.singlefile,
+                  callback: function($$v) {
+                    _vm.singlefile = $$v
+                  },
+                  expression: "singlefile"
+                }
+              })
+            ],
+            1
+          ),
           _vm._v(" "),
-          _c("button", { attrs: { type: "submit" } }, [_vm._v("Submit")])
-        ]
+          _c(
+            "v-btn",
+            {
+              on: {
+                click: function($event) {
+                  return _vm.submit()
+                }
+              }
+            },
+            [_vm._v("Submit")]
+          )
+        ],
+        1
       ),
       _vm._v(" "),
       _c("v-divider"),
@@ -87013,19 +86999,19 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
     stateFileDrawerNav: function stateFileDrawerNav(state) {
       state.FileDrawerNav = !state.FileDrawerNav;
 
-      if (state.FileDrawerNav === false) {// state.FileBucket = null
+      if (state.FileDrawerNav === false) {
+        state.FileBucket = null;
       }
     },
-    // stateFileBucket(state,{model,id,item}) {
     stateFileBucket: function stateFileBucket(state, _ref) {
       var model = _ref.model,
           id = _ref.id,
           item = _ref.item;
-      console.log("ini mutasi");
-      console.log(model);
-      console.log(id);
-      console.log(item);
-      state.FileBucket = item;
+      var activebucket = {
+        model: model,
+        id: id
+      };
+      state.FileBucket = activebucket;
     },
     stateDetailDrawerDialog: function stateDetailDrawerDialog(state) {
       state.DetailDrawerDialog = !state.DetailDrawerDialog;

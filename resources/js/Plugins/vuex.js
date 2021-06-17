@@ -15,16 +15,14 @@ const store = new Vuex.Store({
         stateFileDrawerNav(state) {
             state.FileDrawerNav = !state.FileDrawerNav
             if (state.FileDrawerNav === false) {
-                // state.FileBucket = null
+                state.FileBucket = null
             }
         },
-        // stateFileBucket(state,{model,id,item}) {
-        stateFileBucket(state,{model,id,item}) {
-            console.log("ini mutasi");
-            console.log(model);
-            console.log(id);
-            console.log(item);
-            state.FileBucket = item ;
+        stateFileBucket(state, { model, id, item }) {
+            const activebucket = {
+                model: model, id:id
+            }
+            state.FileBucket = activebucket
         },
         stateDetailDrawerDialog(state) {
             state.DetailDrawerDialog = !state.DetailDrawerDialog

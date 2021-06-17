@@ -14,18 +14,20 @@
       </v-list-item-content>
     </v-list-item>
     <v-divider></v-divider>
-    <form @submit.prevent="submit">
-      <input type="text" v-model="form.name" />
-      <input type="file" @input="form.avatar = $event.target.files[0]" />
-      <progress
-        v-if="form.progress"
-        :value="form.progress.percentage"
-        max="100"
-      >
-        {{ form.progress.percentage }}%
-      </progress>
-      <button type="submit">Submit</button>
-    </form>
+
+    <v-container>
+      <form ref="addImageForm" lazy-validation>
+        <v-file-input
+          ref="fileupload"
+          v-model="singlefile"
+          clearable
+          chips
+          label="File input w/ chips"
+        ></v-file-input>
+      </form>
+      <v-btn @click="submit()">Submit</v-btn>
+    </v-container>
+
     <v-divider></v-divider>
     <v-list dense nav>
       <v-list-item v-for="item in items" :key="item.title" link>
@@ -43,8 +45,8 @@
           color="primary"
           block
           @click.stop="
-            // $inertia.get('/card');
-            $store.state.FileDrawerNav = !$store.state.FileDrawerNav
+            close();
+            $store.state.FileDrawerNav = !$store.state.FileDrawerNav;
           "
         >
           Close
@@ -58,35 +60,42 @@ export default {
   methods: {
     close() {
       console.log("cloes");
+      this.$refs.addImageForm.reset();
+      // this.$refs.fileupload.value = null;
     },
+    change() {},
     submit() {
-      // console.log(this.$store.state.FileBucket.data);
-      // this.form.post("/card/" + this.item.id + "/file")
-
-      console.log("zzz");
-      console.log(this.$store.state.FileBucket);
+      console.log(this.$refs.fileupload.value);
+      // // console.log(this.$store.state.FileBucket);
+      this.form.model = this.$store.state.FileBucket.model;
+      this.form.model_id = this.$store.state.FileBucket.id;
+      this.form.singlefile = this.singlefile;
+      this.$inertia
+        .form(this.form)
+        .post("/card/" + this.$store.state.FileBucket.id + "/file", this.form, {
+          forceFormData: true,
+        });
     },
   },
-  props:["zzz"],
+  computed: {},
+  props: [],
   data() {
     return {
-      dialog: true,
       items: [
         { title: "Dashboard", icon: "mdi-view-dashboard" },
         { title: "Photos", icon: "mdi-image" },
         { title: "About", icon: "mdi-help-box" },
       ],
       right: null,
-      form: this.$inertia.form({
-        name: null,
-        avatar: null,
-      }),
+      singlefile: null,
+      clearable: true,
+      form: {},
     };
   },
   created() {
-    console.log('formupload');
-    console.log("this.$store.state.FileBucket");
-    console.log(this.$store.state.FileBucket);
+    // console.log("formupload");
+    // console.log("this.$store.state.FileBucket");
+    // console.log(this.$store.state.FileBucket);
   },
 };
 </script>
